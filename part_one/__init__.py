@@ -1,8 +1,7 @@
 from otree.api import *
 
-#further packages
+# further packages
 import random
-
 
 doc = """
 There are three different clusters of players (roles): JW, E and NE. 
@@ -26,23 +25,13 @@ class C(BaseConstants):
 
     SAFE_OPTIONS = [cu(775), cu(600), cu(500), cu(400)]
 
-
     # Clusters
     JW_ROLE = "Just World"
     E_ROLE = "Elite"
     NE_ROLE = "Non Elite"
 
     # Templates
-    INTRODUCTION_TEMPLATE = "part_one/temp_introduction.html"
-
-    COMPREHENSION_Q_JW_TEMPLATE = "part_one/temp_comprehension_q_JW.html"
-    COMPREHENSION_Q_UW_TEMPLATE = "part_one/temp_comprehension_q_UW.html"
-
-    INSTRUCTIONS_JW_TEMPLATE = "part_one/temp_instructions_JW.html"
-    INSTRUCTIONS_UW_TEMPLATE = "part_one/temp_instructions_UW.html"
-
     CHOICES_TEMPLATE = "part_one/temp_choices.html"
-
 
 
 ###############################################################################################################
@@ -57,9 +46,10 @@ class Subsession(BaseSubsession):
 class Group(BaseGroup):
     pass
 
-            #################################################################################
-            ################   Assign everything at the PLAYER level      ###################
-            #################################################################################
+    #################################################################################
+    ################   Assign everything at the PLAYER level      ###################
+    #################################################################################
+
 
 class Player(BasePlayer):
     # 4 random choices per player --> 4 risk scenarios --> 4 bools since var of interest (C) is binary
@@ -97,11 +87,11 @@ class Player(BasePlayer):
     quiz_1_all = models.IntegerField(label="1. How many scenarios will be presented?")
     quiz_2_all = models.IntegerField(label="2. How many decisions will be implemented for the payment?")
     quiz_UW = models.BooleanField(label=
-                                    "3. Assume you are assigned to the Non Elite group and you choose "
-                                    "the safe alternative in Scenario 3. Further, assume that Scenario "
-                                    "3 is selected by the computer for your payment. Will you get the "
-                                    "value of the safe option?",
-                                    choices=[[True, "Yes"], [False, "No"]])
+                                  "3. Assume you are assigned to the Non Elite group and you choose "
+                                  "the safe alternative in Scenario 3. Further, assume that Scenario "
+                                  "3 is selected by the computer for your payment. Will you get the "
+                                  "value of the safe option?",
+                                  choices=[[True, "Yes"], [False, "No"]])
 
     # Vars for payoff
     scenario_random = models.IntegerField()
@@ -159,11 +149,12 @@ class Comprehension_Quiz_JW(Page):
         return participant.role == "Just World"
 
     @staticmethod
-    def error_message(player: Player, values):
-        solutions = dict(quiz_1_all=4, quiz_2_all=1)
+    def error_message(player, values):
+        solutions = {'quiz_1_all': 4, 'quiz_2_all': 1}
 
         if values != solutions:
             return "One or more answers were incorrect. Please correct your answers."
+
 
 #########################################
 ##  Comprehension quiz UW participants ##
@@ -178,8 +169,8 @@ class Comprehension_Quiz_UW(Page):
         return participant.role != "Just World"
 
     @staticmethod
-    def error_message(player: Player, values):
-        solutions = dict(quiz_1_all=4, quiz_2_all=1, quiz_UW=False)
+    def error_message(player, values):
+        solutions = {'quiz_1_all': 4, 'quiz_2_all': 1, 'quiz_UW': False}
 
         if values != solutions:
             return "One or more answers were incorrect. Please correct your answers."
@@ -200,7 +191,6 @@ class Waiting_for_Others(WaitPage):
 class Choices(Page):
     form_model = "player"
     form_fields = ["risk_1", "risk_2", "risk_3", "risk_4"]
-
 
 
 #########################################
@@ -240,12 +230,10 @@ class ResultsWaitPage(WaitPage):
             if p.role == C.NE_ROLE:
                 p.safe_random_str = " "
 
-
         # Third, assign a name to each type of player according to index within group
         p1_JW = p1_player_lists[0]
         p1_E = p1_player_lists[1]
         p1_NE = p1_player_lists[2]
-
 
         # Fourth, define payoffs according to role:
         # JW participants have no restriction --> option chosen, option realized
@@ -292,7 +280,6 @@ class ResultsWaitPage(WaitPage):
             participant.p1_lottery_random_str = p.lottery_random_str
 
 
-
 #########################################
 ##   UW learn assigned role: E / NE?   ##
 #########################################
@@ -310,11 +297,10 @@ class Group_Assignment(Page):
 class End_Part_I(Page):
     pass
 
+
 page_sequence = [Introduction,
                  Instructions_JW, Instructions_UW,
                  Comprehension_Quiz_JW, Comprehension_Quiz_UW,
                  Waiting_for_Others, Choices, ResultsWaitPage,
                  Group_Assignment, Waiting_for_Others,
                  End_Part_I]
-
-
