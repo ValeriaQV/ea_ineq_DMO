@@ -35,11 +35,7 @@ class C(BaseConstants):
 
 
     # Templates
-    INSTRUCTIONS_T0_TEMPLATE = "part_two/temp_instructions_T0.html"
-    INSTRUCTIONS_T1_TEMPLATE = "part_two/temp_instructions_T1.html"
-    INSTRUCTIONS_T2_TEMPLATE = "part_two/temp_instructions_T2.html"
-
-    CHOICES_TEMPLATE = "part_two/temp_choices.html"
+    CHOICES_TEMPLATE = "part_one/temp_choices.html"
     FINAL_RESULTS_TEMPLATE = "part_two/temp_final_results.html"
 
 
@@ -67,7 +63,7 @@ def creating_session(subsession):
 
     for group in subsession.get_groups():
         group.t_groups = next(treatments)
-        
+
 
         # Second, store group level data into player data.
         # Important for later showing the correct pages and for storing data into participant level
@@ -289,6 +285,9 @@ class ResultsWaitPage(WaitPage):
 class Final_Results(Page):
     pass
 
+class End_Part_II(Page):
+    pass
+
 
 page_sequence = [Instructions_T0, Instructions_T1, Instructions_T2,
-                 Choices, ResultsWaitPage, Final_Results]
+                 Choices, ResultsWaitPage, Final_Results, End_Part_II]
