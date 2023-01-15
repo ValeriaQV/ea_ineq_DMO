@@ -1,0 +1,62 @@
+{{ block title }}Page 1 of 5{{ endblock }}
+{{ block content }}
+
+    <p>
+        Please select the one statement of each pair which you more strongly
+        <i>believe</i> to be the case as far as you're concerned.
+    </p>
+
+
+    <div class="card bg-light m-3">
+        <div class="card-body">
+
+            {{ formfield "LOC_1" }}
+
+        </div>
+    </div>
+
+    <div class="card bg-light m-3">
+        <div class="card-body">
+
+            {{ formfield "LOC_2" }}
+
+        </div>
+    </div>
+
+
+    <div class="card bg-light m-3">
+        <div class="card-body">
+
+            {{ formfield "LOC_3" }}
+
+        </div>
+    </div>
+
+    <div class="card bg-light m-3">
+        <div class="card-body">
+
+            {{ formfield "LOC_4" }}
+
+        </div>
+    </div>
+
+
+    <div class="card bg-light m-3">
+        <div class="card-body">
+
+            {{ formfield "LOC_5" }}
+
+        </div>
+    </div>
+
+    <div class="card bg-light m-3">
+        <div class="card-body">
+
+            {{ formfield "LOC_6" }}
+
+        </div>
+    </div>
+
+    {{ next_button }}
+
+{{ endblock }}
