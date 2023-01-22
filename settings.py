@@ -5,10 +5,12 @@ SESSION_CONFIGS = [
     dict(
         name='ea_ineq_DMO',
         display_name="ea_ineq_DMO",
-        app_sequence=['part_one', 'part_two', 'survey'],
+        app_sequence=['part_one', 'part_two', 'choice_list', 'survey'],
         num_demo_participants=18,
-    ),
+        )
 ]
+
+
 
 # if you set a property in SESSION_CONFIG_DEFAULTS, it will be inherited by all configs
 # in SESSION_CONFIGS, except those that explicitly override it.
@@ -27,7 +29,8 @@ PARTICIPANT_FIELDS = ["p1_group_id", "c_role",
                       "p2_scenario_random", "p2_risk_random", "p2_lottery_random", "p2_payoff",
                       "p2_risk_random_str", "p2_safe_random_str", "p2_lottery_random_str",
                       "p2_character_random", "p2_character_sex",
-                      "treatment_0", "treatment_1", "treatment_2"]
+                      "treatment_0", "treatment_1", "treatment_2",
+                      "cl_payoff"]
 
 SESSION_FIELDS = ["t_groups", "character_random"]
 
