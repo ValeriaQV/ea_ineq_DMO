@@ -1,0 +1,19 @@
+{{ block title }}Decision
+{{ endblock }}
+{{ block content }}
+
+
+    Please select which option you prefer for each of the below rows.
+    <p></p>
+
+{{ include C.TABLE_TEMPLATE }}
+
+{{ next_button }}
+
+<script>
+    function sendPref(radio) {
+        liveSend({trial_id: radio.name, chose_B: radio.value === '1'});
+    }
+</script>
+
+{{ endblock }}
