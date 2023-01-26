@@ -33,11 +33,10 @@ class C(BaseConstants):
     CHARACTERS = ["Samantha", "Daniel"]
     CHARACTERS_SEX = ["she", "he"]
 
-
     # Templates
     CHOICES_TEMPLATE = "part_one/temp_choices.html"
+    NARRATIVES = "part_two/temp_narratives.html"
     FINAL_RESULTS_TEMPLATE = "part_two/temp_final_results.html"
-
 
 
 ###############################################################################################################
@@ -48,104 +47,58 @@ class C(BaseConstants):
 class Subsession(BaseSubsession):
     pass
 
-
-            #################################################################################
-            ################              Create Subsession               ###################
-            #################################################################################
+    #################################################################################
+    ################              Create Subsession               ###################
+    #################################################################################
 
 
 # Randomly allocate the 3 treatments at the group level:
 @staticmethod
 def creating_session(subsession):
-
     # First, Since we want balanced groups use itertools
     treatments = itertools.cycle(C.TREATMENTS)
+    is_fem_character = itertools.cycle(C.CHARACTERS)
 
     for group in subsession.get_groups():
         group.t_groups = next(treatments)
 
+        # Second, since we want to test whether the sex of the fictional character plays a role,
+        # split only T1 participants into "Samantha" group and "Daniel" group
+        if group.t_groups == "T1":
+            group.character_random = next(is_fem_character)
 
-        # Second, store group level data into player data.
-        # Important for later showing the correct pages and for storing data into participant level
+            if group.character_random == C.CHARACTERS[0]:
+                group.character_sex = C.CHARACTERS_SEX[0]
+            else:
+                group.character_sex = C.CHARACTERS_SEX[1]
+        else:
+            group.character_random = None
+            group.character_sex = None
+
+        # Last, store group level data into player data.
         for p in group.get_players():
             p.treatment_0 = group.t_groups == "T0"
             p.treatment_1 = group.t_groups == "T1"
             p.treatment_2 = group.t_groups == "T2"
-
-        # Last, since we want to test whether the sex of the fictional character plays a role,
-        # split T1 participants into "Samantha" group and "Daniel" group
-        # To this end:
-            # Since we want balanced data, use itertools at the group level
-
-        is_fem_character = itertools.cycle(C.CHARACTERS)
-
-        for group in subsession.get_groups():
-            group.character_random = next(is_fem_character)
-
-            # Yet, we want to store the data in the player level, BUT ONLY for T1 participants
-            # T0 and T2 participants do not need this random assignment, thus set to "None".
-            for p in group.get_players():
-                if group.id_in_subsession == "T1":
-                    p.character_random = group.character_random
-
-                    # Necessary for template
-                    if p.character_random == C.CHARACTERS[0]:
-                        p.character_sex = C.CHARACTERS_SEX[0]
-                    else:
-                        p.character_sex = C.CHARACTERS_SEX[1]
-
-                else:
-                    p.character_random = None
-
-            # Store data at the participant level. Important for showing correct pages and templates
-                participant = p.participant
-                participant.p2_character_random = p.field_maybe_none("character_random")
-                participant.p2_character_sex = p.field_maybe_none("character_sex")
 
 
 # Contrary to the first part, in this app we need data at the group level
 class Group(BaseGroup):
     t_groups = models.StringField(initial="-")
     character_random = models.StringField()
+    character_sex = models.StringField()
 
 
 # Same scenarios as in part_one plus additional models
 class Player(BasePlayer):
-    risk_1 = models.BooleanField(
-        label="Scenario 1:",
-        choices=[
-            [True, "A: -800 tokens with 50% probability, or -0 tokens with 50% probability"],
-            [False, "B: -775 tokens with 100% probability"]
-        ]
-    )
-    risk_2 = models.BooleanField(
-        label="Scenario 2:",
-        choices=[
-            [True, "A: -800 tokens with 50% probability, or -0 tokens with 50% probability"],
-            [False, "B: -600 tokens with 100% probability"]
-        ]
-    )
-    risk_3 = models.BooleanField(
-        label="Scenario 3:",
-        choices=[
-            [True, "A: -800 tokens with 50% probability, or -0 tokens with 50% probability"],
-            [False, "B: -500 tokens with 100% probability"]
-        ]
-    )
-    risk_4 = models.BooleanField(
-        label="Scenario 4:",
-        choices=[
-            [True, "A: -800 tokens with 50% probability, or -0 tokens with 50% probability"],
-            [False, "B: -400 tokens with 100% probability"]
-        ]
-    )
+    risk_1 = models.BooleanField(label="Scenario 1")
+    risk_2 = models.BooleanField(label="Scenario 2")
+    risk_3 = models.BooleanField(label="Scenario 3")
+    risk_4 = models.BooleanField(label="Scenario 4")
 
     treatment_0 = models.BooleanField(initial=False)
     treatment_1 = models.BooleanField(initial=False)
     treatment_2 = models.BooleanField(initial=False)
-
-    character_random = models.StringField()
-    character_sex = models.StringField()
 
     scenario_random = models.IntegerField()
 
@@ -162,49 +115,18 @@ class Player(BasePlayer):
 ###############################################################################################################
 
 
-#########################################
-##    Instructions T0 participants     ##
-#########################################
-
-class Instructions_T0(Page):
-    @staticmethod
-    def is_displayed(player):
-        return player.treatment_0
+class Instructions(Page):
+    pass
 
 
-#########################################
-##    Instructions T1 participants     ##
-#########################################
+class Narratives(Page):
+    pass
 
-class Instructions_T1(Page):
-    @staticmethod
-    def is_displayed(player):
-        return player.treatment_1
-
-
-#########################################
-##    Instructions T2 participants     ##
-#########################################
-
-class Instructions_T2(Page):
-    @staticmethod
-    def is_displayed(player):
-        return player.treatment_2
-
-
-#########################################
-##  Decision Page -- ALL participants  ##
-#########################################
 
 class Choices(Page):
     form_model = "player"
     form_fields = ["risk_1", "risk_2", "risk_3", "risk_4"]
 
-
-#########################################
-##  define vars and payoffs part_two   ##
-##        for ALL participants         ##
-#########################################
 
 class ResultsWaitPage(WaitPage):
     form_model = "player"
@@ -256,7 +178,6 @@ class ResultsWaitPage(WaitPage):
         p2_NE.lottery_random = random.choice([C.RISK_LOW, C.RISK_HIGH])
         p2_NE.payoff = C.ENDOWMENT - p2_NE.lottery_random
 
-
         # Store data at the participant level
         for p in group.get_players():
             participant = p.participant
@@ -280,14 +201,10 @@ class ResultsWaitPage(WaitPage):
             participant.p2_lottery_random_str = p.lottery_random_str
 
 
-
-
 class Final_Results(Page):
     pass
 
-class End_Part_II(Page):
-    pass
 
 
-page_sequence = [Instructions_T0, Instructions_T1, Instructions_T2,
-                 Choices, ResultsWaitPage, Final_Results, End_Part_II]
+
+page_sequence = [Instructions, Narratives, Choices, ResultsWaitPage, Final_Results]
