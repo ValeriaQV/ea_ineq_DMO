@@ -1,5 +1,5 @@
-{{ block title }}Decision
-{{ endblock }}
+{{ block title }}Part III{{ endblock }}
+
 {{ block content }}
 
 
@@ -10,10 +10,42 @@
 
 {{ next_button }}
 
+
+
 <script>
-    function sendPref(radio) {
+function sendPref(radio) {
         liveSend({trial_id: radio.name, chose_B: radio.value === '1'});
     }
+
+
+
+    $(document).ready(function () {
+        $('input[type=radio]').change(
+            function () {
+                var clickedRadio = this;
+                var afterClickedRadio = false;
+                var radios = document.querySelectorAll('input[type=radio]');
+                /* Auto-fill left/right column */
+                for (i = 0; i < radios.length; ++i) {
+                    var radio = radios[i];
+                    if (radio === clickedRadio) {
+                        afterClickedRadio = true;
+                    }
+                    /* Auto-fill left column */
+                    if (!afterClickedRadio && clickedRadio.value === '0' && radio.value === '0') {
+                        radio.checked = true; liveSend({trial_id: radio.name, chose_B: radio.value === '0'});
+                    }
+                    /* Auto-fill right column */
+                    if (afterClickedRadio && clickedRadio.value === '1' &&  radio.value === '1') {
+                        radio.checked = true; liveSend({trial_id: radio.name, chose_B: radio.value === '1'});
+                    }
+                }
+            }
+        )
+    });
+
+
 </script>
+
 
 {{ endblock }}

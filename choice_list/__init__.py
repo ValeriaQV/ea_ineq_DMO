@@ -10,6 +10,7 @@ class C(BaseConstants):
     PLAYERS_PER_GROUP = None
     NUM_ROUNDS = 1
     TABLE_TEMPLATE = __name__ + '/table.html'
+    enforce_consistency = True
 
 
 def read_csv():
@@ -58,7 +59,12 @@ class Trial(ExtraModel):
 
 
 # PAGES
+
+class Instructions(Page):
+    pass
+
 class Stimuli(Page):
+
     @staticmethod
     def vars_for_template(player: Player):
         return dict(trials=Trial.filter(player=player), is_results=False)
@@ -107,4 +113,4 @@ class End_Choice_list(Page):
     pass
 
 
-page_sequence = [Stimuli, Results, End_Choice_list]
+page_sequence = [Instructions, Stimuli, Results, End_Choice_list]
