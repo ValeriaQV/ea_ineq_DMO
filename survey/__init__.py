@@ -84,8 +84,9 @@ class Player(BasePlayer):
         widget=widgets.RadioSelect
     )
 
-    nationality = models.StringField(
-        label='3. What is your nationality? (If you have more than one, please indicate all of them.)'
+    nationality = models.BooleanField(
+        label='3. Where you born in Germany?',
+        choices=[[True, 'Yes'], [False, 'No']]
     )
 
     migration = models.BooleanField(
@@ -94,7 +95,7 @@ class Player(BasePlayer):
     )
 
     migration_parents = models.BooleanField(
-        label='5. Is at least one of your parents a foreigner?',
+        label='5. Is at least one of your parents raced and born in another country than Germany?',
         choices=[[True, 'Yes'], [False, 'No']]
     )
 
@@ -107,24 +108,15 @@ class Player(BasePlayer):
         widget=widgets.RadioSelectHorizontal
     )
 
-    educ = models.StringField(
-        label='7. What is the highest educational level that you have attained?',
-        choices=[['1', 'No formal education'], ['2', 'Complete primary school (Grundschulabschluss)'],
-                 ['3', 'Complete middle school (Haupt- or Realschulabschluss)'],
-                 ['4', 'Complete secondary school (Fachhochschulreife)'],
-                 ['5', 'Complete vocational training'],
-                 ['6', 'Bachelor degree'], ['7', 'Master degree'], ['8', 'Doctoral degree']],
-    )
-
     employment = models.IntegerField(
-        label='8. Which of the following categories best describes your current employment status?',
+        label='7. Which of the following categories best describes your current employment status?',
         choices=[[1, 'Employed, Full-Time'], [2, 'Employed, Part-Time'],
                  [3, 'Unemployed, seeking for work'], [4, 'Unemployed, NOT seeking for work'],
                  [5, 'Student'], [6, 'Retired']],
     )
 
     income = models.IntegerField(
-        label="9. What is your household's monthly available (net) income after taxes and social security?",
+        label="8. What is your household's monthly available (net) income after taxes and social security?",
         choices=[[1, '0 - 520 EUR'], [2, '521 - 999 EUR'], [3, '1.000 - 1.999 EUR'],
                  [4, '2.000 - 2.999 EUR'], [5, '3.000 - 3.999 EUR'],
                  [6, '4.000 EUR or more'], [-99, 'No answer']],
@@ -142,8 +134,9 @@ class LOC(Page):
 
 class Demographics(Page):
     form_model = 'player'
-    form_fields = ['age', 'gender', 'nationality', 'migration', 'migration_parents',
-                   'soc_ladder', 'educ', 'employment', 'income']
+    form_fields = ['age', 'gender', 'nationality', 'migration',
+                   'migration_parents', 'soc_ladder', 'employment',
+                   'income']
 
 
 class Summary_Payoff(Page):
