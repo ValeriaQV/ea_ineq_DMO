@@ -17,60 +17,65 @@ class Group(BaseGroup):
 
 class Player(BasePlayer):
 
-    ########### Sapp_Harrod (1993) 9-Item scale Locus of Control [abbrev. of Levenson's 1974 - 7point Likert] ###################
+    ########### SOEP (2005-2020) 10-Item scale Locus of Control [7point Likert] ###################
 
     LOC_1 = models.IntegerField(
-        label='My life is determined by my own actions.',
-        choices=[1,2,3,4,5,6,7],
+        label='How my life goes depends on me.',
+        choices=range(1, 8),
         widget=widgets.RadioSelect
     )
 
     LOC_2 = models.IntegerField(
-        label='I am usually able to protect my personal interests.',
-        choices=[1, 2, 3, 4, 5, 6, 7],
+        label='Compared to other people, I have not achieved what I deserve.',
+        choices=range(1, 8),
         widget=widgets.RadioSelect
     )
 
     LOC_3 = models.IntegerField(
-        label='I can pretty much determine what will happen in my life.',
-        choices=[1, 2, 3, 4, 5, 6, 7],
+        label='What a person achieves is above all a question of fate or luck.',
+        choices=range(1, 8),
         widget=widgets.RadioSelect
     )
 
     LOC_4 = models.IntegerField(
-        label='To a great extent, my life is controlled by accidental happenings.',
-        choices=[1, 2, 3, 4, 5, 6, 7],
+        label='If a person is socially or politically active, he/she can have an effect on social conditions.',
+        choices=range(1, 8),
         widget=widgets.RadioSelect
     )
 
     LOC_5 = models.IntegerField(
-        label='Often there is no chance of protecting my personal interest from bad luck happenings.',
-        choices=[1, 2, 3, 4, 5, 6, 7],
+        label='I frequently have the experience that other people have a controlling influence over my life.',
+        choices=range(1, 8),
         widget=widgets.RadioSelect
     )
 
     LOC_6 = models.IntegerField(
-        label='When I get what I want, it\'s usually because I\'m lucky.',
-        choices=[1, 2, 3, 4, 5, 6, 7],
+        label='One has to work hard in order to succeed.',
+        choices=range(1, 8),
         widget=widgets.RadioSelect
     )
 
     LOC_7 = models.IntegerField(
-        label='People like myself have little chance of protecting our personal interests where '
-              'they conflict with those of strong pressure groups.',
-        choices=[1, 2, 3, 4, 5, 6, 7],
+        label='If I run up against difficulties in life, I often doubt my own abilities.',
+        choices=range(1, 8),
         widget=widgets.RadioSelect
     )
 
     LOC_8 = models.IntegerField(
-        label='My life is chiefly controlled by powerful others.',
-        choices=[1, 2, 3, 4, 5, 6, 7],
+        label='The opportunities that I have in life are determined by the social conditions.',
+        choices=range(1, 8),
         widget=widgets.RadioSelect
     )
 
     LOC_9 = models.IntegerField(
-        label='I feel like what happens in my life is mostly determined by powerful people.',
-        choices=[1, 2, 3, 4, 5, 6, 7],
+        label='Innate abilities are more important than any efforts one can make.',
+        choices=range(1, 8),
+        widget=widgets.RadioSelect
+    )
+
+    LOC_10 = models.IntegerField(
+        label='I have little control over the thins that happen in my life.',
+        choices=range(1, 8),
         widget=widgets.RadioSelect
     )
 
@@ -85,7 +90,7 @@ class Player(BasePlayer):
     )
 
     nationality = models.BooleanField(
-        label='3. Where you born in Germany?',
+        label='3. Were you born in Germany?',
         choices=[[True, 'Yes'], [False, 'No']]
     )
 
@@ -128,7 +133,7 @@ class Player(BasePlayer):
 
 class LOC(Page):
     form_model = 'player'
-    form_fields = ['LOC_1', 'LOC_2','LOC_3', 'LOC_4','LOC_5', 'LOC_6', 'LOC_7','LOC_8', 'LOC_9']
+    form_fields = ['LOC_1', 'LOC_2','LOC_3', 'LOC_4','LOC_5', 'LOC_6', 'LOC_7','LOC_8', 'LOC_9', 'LOC_10']
 
 
 

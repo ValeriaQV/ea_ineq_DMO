@@ -6,9 +6,10 @@ SESSION_CONFIGS = [
         name='ea_ineq_DMO',
         display_name="ea_ineq_DMO",
         app_sequence=['part_one', 'part_two', 'choice_list', 'survey'],
-        num_demo_participants=150,
+        num_demo_participants=9,
         )
 ]
+
 
 
 
@@ -29,7 +30,7 @@ PARTICIPANT_FIELDS = ["p1_group_id", "c_role",
                       "p2_scenario_random", "p2_risk_random", "p2_lottery_random", "p2_payoff",
                       "p2_risk_random_str", "p2_safe_random_str", "p2_lottery_random_str",
                       "p2_character_random", "p2_character_sex",
-                      "cl_payoff"]
+                      "cl_payoff", "sum_payoffs"]
 
 SESSION_FIELDS = ["t_groups", "character_random", "character_sex"]
 

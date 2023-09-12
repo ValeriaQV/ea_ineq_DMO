@@ -33,11 +33,11 @@ function sendPref(radio) {
                     }
                     /* Auto-fill left column */
                     if (!afterClickedRadio && clickedRadio.value === '0' && radio.value === '0') {
-                        radio.checked = true; liveSend({trial_id: radio.name, chose_B: radio.value === '0'});
+                        radio.checked = true; liveSend({trial_id: radio.name, chose_B: false});
                     }
                     /* Auto-fill right column */
                     if (afterClickedRadio && clickedRadio.value === '1' &&  radio.value === '1') {
-                        radio.checked = true; liveSend({trial_id: radio.name, chose_B: radio.value === '1'});
+                        radio.checked = true; liveSend({trial_id: radio.name, chose_B: true});
                     }
                 }
             }

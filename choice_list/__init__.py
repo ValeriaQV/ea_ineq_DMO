@@ -10,7 +10,7 @@ class C(BaseConstants):
     PLAYERS_PER_GROUP = None
     NUM_ROUNDS = 1
     TABLE_TEMPLATE = __name__ + '/table.html'
-    enforce_consistency = True
+    #enforce_consistency = True
 
 
 def read_csv():
@@ -101,6 +101,8 @@ class Stimuli(Page):
 
         participant = player.participant
         participant.cl_payoff = player.payoff
+
+        participant.sum_payoffs = participant.p1_payoff + participant.p2_payoff + participant.cl_payoff
 
 
 class Results(Page):
