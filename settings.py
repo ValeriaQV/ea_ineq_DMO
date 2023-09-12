@@ -6,7 +6,7 @@ SESSION_CONFIGS = [
         name='ea_ineq_DMO',
         display_name="ea_ineq_DMO",
         app_sequence=['part_one', 'part_two', 'choice_list', 'survey'],
-        num_demo_participants=9,
+        num_demo_participants=99,
         )
 ]
 
